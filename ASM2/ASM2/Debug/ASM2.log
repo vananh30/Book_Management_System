@@ -1,0 +1,7 @@
+﻿  ASM2.cpp
+C:\C Learning\ASM2\ASM2\ASM2.cpp(22,27): warning C4018: '<': signed/unsigned mismatch
+  RentalShop.cpp
+C:\C Learning\ASM2\ASM2\RentalShop.cpp(123,23): warning C4018: '<': signed/unsigned mismatch
+C:\C Learning\ASM2\ASM2\RentalShop.cpp(127,23): warning C4018: '<': signed/unsigned mismatch
+  Generating Code...
+  ASM2.vcxproj -> C:\C Learning\ASM2\Debug\ASM2.exe
