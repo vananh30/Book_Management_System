@@ -146,6 +146,7 @@
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="MovieRecords.cpp" />
     <ClCompile Include="RentalShop.cpp" />
+    <ClCompile Include="Vip.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Customer.h" />
@@ -154,6 +155,7 @@
     <ClInclude Include="Item.h" />
     <ClInclude Include="MovieRecords.h" />
     <ClInclude Include="RentalShop.h" />
+    <ClInclude Include="Vip.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="items.txt" />

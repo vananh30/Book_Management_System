@@ -1,19 +1,19 @@
-#include "VIP.h"
-VIP::VIP() {
+#include "Vip.h"
+Vip::Vip() {
 
 }
-VIP::VIP(Customer* cus) {
+Vip::Vip(Customer *cus) {
 	this->id = cus->getID();
-	this->name = cus->getName();
 	this->address = cus->getAdress();
-	this->phone = cus->getPhone();
-	this->numOfRentals = cus->getnumOfRentals();
-	this->customerType = cus->getcustomerType();
-	this->listOfRentals = cus->getListOfRentals();
+	this->name = this->getName();
+	this->phone = this->getPhone();
+	this->numOfRentals = this->getnumOfRentals();
+	this->customerType = this->getcustomerType();
+	this->listOfRentals = this->getListOfRentals();
 }
-VIP::~VIP() {
+Vip::~Vip() {
 
 }
-string VIP::toString() {
-	return "hi";
+string Vip::toString() {
+	return Customer::toString() + "\nVIP object!";
 }

@@ -15,6 +15,9 @@ string Customer::getPhone() {
 int Customer::getnumOfRentals() {
 	return this->numOfRentals;
 }
+string Customer::getcustomerType() {
+	return this->customerType;
+}
 vector<string> Customer::getListOfRentals() {
 	return this->listOfRentals;
 }
@@ -33,6 +36,9 @@ void Customer::setPhone(string phone) {
 void Customer::setNumOfRentals(int num) {
 	this->numOfRentals = num;
 }
+void Customer::setcustomerType(string type) {
+	this->customerType = type;
+}
 void Customer::setListOfRentals(vector<string> listOfRentals) {
 	this->listOfRentals = listOfRentals;
 }
@@ -47,7 +53,7 @@ Customer::~Customer() {
 }
 /*toString*/
 string Customer::toString() {
-	/*
+	
 	// read the list of rentals
 	string listRental = "";
 	for (int i = 0; i < this->listOfRentals.size(); i++) {
@@ -62,9 +68,11 @@ string Customer::toString() {
 		this->getAdress() +
 		"\nPhone: " +
 		this->getPhone() +
+		"\nNumber of rentals: " +
+		to_string(this->getnumOfRentals()) +
+		"\nCustomer type: " +
+		this->getcustomerType() +
 		"\nList of Rental " +
 		listRental +  '\n';
-		*/
-	return "hi";
 }
 
