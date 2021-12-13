@@ -20,7 +20,6 @@ int main()
         cout << "CANNOT open the file";
     }
     else {
-      
        RentalShop *rt = new RentalShop(fileinItem, fileinCustomer);
        rt->printAll();
        rt->deletePointerVector();

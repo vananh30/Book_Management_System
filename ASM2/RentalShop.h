@@ -18,8 +18,14 @@ private:
 	//vector<Customer*> customers;
 	vector<Item*> items;
 	vector<Customer*> customers;
+	/*VALIDATE INPUT FILE*/
+	static bool checkNullField(string field);
+	static bool checkIdItem(string id, vector<string>& IDs);
+	static bool checkRentalType(string rentalType);
+	static void checkLoan(string loan, int& numLoanType, string& loanType);
+	static void checkFee(string fee, bool& isValid);
 	/*Read one line of the Items.txt file to check which rental type the line is*/
-	static void readOneItemInItemFile(ifstream& filein, Item* item, string& genre);
+	static void readOneItemInItemFile(ifstream& filein, Item* item, string& genre, vector<string>& IDs);
 	static int checkTypeItem(Item* item);
 	static void readFileItem(ifstream& filein, vector<Item*>& items);
 	static void readOneCustomerInCustomerFile(ifstream& filein, Customer* customer);

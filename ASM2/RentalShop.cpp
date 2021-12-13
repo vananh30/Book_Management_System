@@ -16,49 +16,136 @@ void RentalShop::setItems(vector<Item*> items) {
     this->items = items;
 }
 
-void RentalShop::readOneItemInItemFile(ifstream& filein, Item* item, string& genre) {
+/*CHECK INPUT FILE FIELD*/
+bool RentalShop::checkNullField(string field) {
+    if (field == "" || field == "\n") {
+        return false;
+    }
+    /*check if it only contains space*/
+    else if (field.find_first_not_of(' ') == field.npos) {
+        return false;
+    }
+    return true;
+}
+/*check ID Item format*/
+bool RentalShop::checkIdItem(string id, vector<string>& IDs) {
+    // if id is not a null field
+    if (checkNullField(id)) {
+        if (id[0] == 'I' && id[4] == '-') {
+            bool checkNum = true;
+            // check the next 3 digits
+            for (int i = 1; i < id.length(); i++) {
+                if (i == 4) continue;
+                if (!isdigit(id[i])) {
+                    checkNum = false;
+                }
+            }
+            if (checkNum) {
+                // convert substr from index 5 to a number
+                int year = stoi(id.substr(5, id.length() - 5));
+                // validate year
+                if (year >= 1000 && year <= 2021) {
+                    for (int i = 0; i < IDs.size(); i++) {
+                        if (id == IDs[i]) {
+                            cout << "ID is not unique" << endl;
+                            return false;
+                        }
+                    }
+                    IDs.push_back(id);
+                    return true;
+                }
+            }  
+        }
+        cout << "Wrong ID item format!" << endl;
+        return false;
+    }
+    cout << "ID is empty!" << endl;
+    return false;
+}
+/*check Rental Type*/
+bool RentalShop::checkRentalType(string rentalType) {
+    if (rentalType == "Game" || rentalType == "DVD" || rentalType == "Record") { 
+        return true;
+    }
+    cout << "Rental type is not Valid!" << endl;
+    return false;
+}
+/*check loan */
+void RentalShop::checkLoan(string loan, int& numLoanType, string& loanType) {
+    if (checkNullField(loan)) {
+        int pos = loan.find('-'); // find the token
+        loanType = loan.substr(pos + 1, loan.length());
+        if (pos != -1 && (loanType == "day" || loanType == "week")) {
+            bool checkNum = true;
+            for (int i = 0; i < pos; i++) {
+                if (!isdigit(loan[i])) {
+                    checkNum = false;
+                    numLoanType = -1;
+                    return;
+                }
+            }
+            if(checkNum) numLoanType = stoi(loan.substr(0, pos));
+        }
+        else {
+            numLoanType = -1;
+            cout << "Wrong loan format!" << endl;
+            return;
+        }
+    }
+}
+/*check fee*/
+void RentalShop::checkFee(string fee, bool &isValid) {
+    // Use std::stoi() to convert string to integer
+    try {
+        // Wrap up code in try-catch block if string is not validated
+        float res = stof(fee);
+        isValid = true;
+        return ;
+    }
+    catch (std::invalid_argument e) {
+        cout << "Fee is not a valid value!\n";
+    }
+    isValid = false;
+    return;
+}
+
+
+void RentalShop::readOneItemInItemFile(ifstream& filein, Item* item, string& genre, vector<string>& IDs) {
     // initialize seven variables to store 
     string id;
     string title;
     string rentalType;
+    string loan;
     int numLoanType;
     string loanType;
     int numOfCopy;
-    float fee;
+    string fee;
     // read id
     getline(filein, id, ',');
     // read title
     getline(filein, title, ',');
     // read rental  type
     getline(filein, rentalType, ',');
-    // check what type of rental Type
-    item->setID(id);
-    item->setTitle(title);
-    item->setRentalType(rentalType);
-    // set loanType and numLoanType
-    filein >> numLoanType;
-    item->setNumLoanType(numLoanType);
-    filein.seekg(1, ios_base::cur); // exclude 1 byte of the character "-"
-    getline(filein, loanType, ',');
-    item->setLoanType(loanType);
+    // get loanType and numLoanType
+    getline(filein, loan, ',');
+    checkLoan(loan, numLoanType, loanType);
     // set number of copy, fee, genre
     filein >> numOfCopy;
-    item->setNumOfCopy(numOfCopy);
     filein.seekg(1, ios_base::cur); // exclude 1 byte of the character "-"
-    filein >> fee;
-    item->setFee(fee);
+
     // check rental type of the Item object
-    if (item->getRentalType() == "Record" || item->getRentalType() == "DVD") {
-        filein.seekg(1, ios_base::cur); // exclude 1 byte of the character "," 
+    if (rentalType == "Record" || rentalType == "DVD") {
+        getline(filein, fee, ',');
         getline(filein, genre);
     }
     else {
+        filein >> fee;
         string temp; // read the "\n" of the line
-        getline(filein, temp);      
+        getline(filein, temp);
+    } 
+    if (true) {
+        item->setAll(id, title, rentalType, numLoanType, loanType, numOfCopy, stof(fee));
     }
-
-    
-    
 }
 /*Check type of item
     return 2 : Record
@@ -84,6 +171,7 @@ void RentalShop::readFileItem(ifstream& filein, vector<Item*>& items) {
    // move the pointer to the start of the line
     int space_back = 0; // the size to move back
     int temp_space_back = 0;
+    vector<string> IDs;
     for (;;) {
         if (!filein) break; // read until the end of the file
         getline(filein, temp);
@@ -96,7 +184,7 @@ void RentalShop::readFileItem(ifstream& filein, vector<Item*>& items) {
         if (!filein) break; // read until the end of the file
             Item* item = new Item();
             string genre = "";
-            readOneItemInItemFile(filein, item, genre);
+            readOneItemInItemFile(filein, item, genre, IDs);
             int checkType = checkTypeItem(item);
             if (checkType == 2) {
                 MovieRecords* mv = new MovieRecords(item);
@@ -112,7 +200,8 @@ void RentalShop::readFileItem(ifstream& filein, vector<Item*>& items) {
                 Games* game = new Games(item);
                 items.push_back(game);
             }
-        }  
+        }
+    IDs.clear();
 }
 
 /*=====================================================
@@ -150,6 +239,7 @@ void RentalShop::readOneCustomerInCustomerFile(ifstream& filein, Customer* custo
     string temp; // read the "\n" of the line
     getline(filein, temp);
     customer->setAll(id, name, address, phone, numOfRentals, customerType, listItem);
+   
 }
 
 /*Read file and classofy the Item then add to vector Item*/
@@ -215,9 +305,12 @@ void RentalShop::deletePointerVector() {
 
 /*delete pointer vector*/
 void RentalShop::printAll() {
-    for (int i = 0; i < customers.size(); i++) {
+    /*
+    * for (int i = 0; i < customers.size(); i++) {
         cout << customers[i]->toString() << endl;
     }
+    */
+    
 
     for (int i = 0; i < items.size(); i++) {
         cout << items[i]->toString() << endl;
