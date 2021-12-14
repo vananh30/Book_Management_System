@@ -1,9 +1,9 @@
 ﻿  RentalShop.cpp
 C:\C Learning\ASM2\ASM2\RentalShop.cpp(37,31): warning C4018: '<': signed/unsigned mismatch
 C:\C Learning\ASM2\ASM2\RentalShop.cpp(48,39): warning C4018: '<': signed/unsigned mismatch
-C:\C Learning\ASM2\ASM2\RentalShop.cpp(181,34): warning C4244: '=': conversion from 'std::streamoff' to 'int', possible loss of data
-C:\C Learning\ASM2\ASM2\RentalShop.cpp(258,34): warning C4244: '=': conversion from 'std::streamoff' to 'int', possible loss of data
-C:\C Learning\ASM2\ASM2\RentalShop.cpp(299,23): warning C4018: '<': signed/unsigned mismatch
-C:\C Learning\ASM2\ASM2\RentalShop.cpp(303,23): warning C4018: '<': signed/unsigned mismatch
-C:\C Learning\ASM2\ASM2\RentalShop.cpp(318,23): warning C4018: '<': signed/unsigned mismatch
+C:\C Learning\ASM2\ASM2\RentalShop.cpp(212,34): warning C4244: '=': conversion from 'std::streamoff' to 'int', possible loss of data
+C:\C Learning\ASM2\ASM2\RentalShop.cpp(289,34): warning C4244: '=': conversion from 'std::streamoff' to 'int', possible loss of data
+C:\C Learning\ASM2\ASM2\RentalShop.cpp(330,23): warning C4018: '<': signed/unsigned mismatch
+C:\C Learning\ASM2\ASM2\RentalShop.cpp(334,23): warning C4018: '<': signed/unsigned mismatch
+C:\C Learning\ASM2\ASM2\RentalShop.cpp(349,23): warning C4018: '<': signed/unsigned mismatch
   ASM2.vcxproj -> C:\C Learning\ASM2\Debug\ASM2.exe

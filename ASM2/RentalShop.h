@@ -23,7 +23,10 @@ private:
 	static bool checkIdItem(string id, vector<string>& IDs);
 	static bool checkRentalType(string rentalType);
 	static void checkLoan(string loan, int& numLoanType, string& loanType);
-	static void checkFee(string fee, bool& isValid);
+	static bool checkFee(string fee);
+	static bool checkInt(string num);
+	static bool checkItem(string id, vector<string>& IDs, string title, string rentalType, string loan, int& numLoanType, string& loanType, string fee, string numOfCopy, string& genre);
+
 	/*Read one line of the Items.txt file to check which rental type the line is*/
 	static void readOneItemInItemFile(ifstream& filein, Item* item, string& genre, vector<string>& IDs);
 	static int checkTypeItem(Item* item);

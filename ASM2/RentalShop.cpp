@@ -94,19 +94,56 @@ void RentalShop::checkLoan(string loan, int& numLoanType, string& loanType) {
     }
 }
 /*check fee*/
-void RentalShop::checkFee(string fee, bool &isValid) {
-    // Use std::stoi() to convert string to integer
-    try {
-        // Wrap up code in try-catch block if string is not validated
-        float res = stof(fee);
-        isValid = true;
-        return ;
+bool RentalShop::checkFee(string fee) {
+    if (fee.empty())
+        return false;
+
+    bool sawDot = false;
+    for (char c : fee)
+    {
+        if (!(isdigit(c) || (c == '.' && !sawDot)))
+            return false;
+        sawDot = sawDot || (c == '.');
     }
-    catch (std::invalid_argument e) {
-        cout << "Fee is not a valid value!\n";
+
+    return true;
+}
+/*check if a number is integer*/
+bool RentalShop::checkInt(string num) {
+    if (num.empty()) {
+        cout << "Int is empty!" << endl;
+        return false;
     }
-    isValid = false;
-    return;
+    for (char c : num) {
+        if (!(isdigit(c))) {
+            cout << "Int is wrong format!" << endl;
+            return false;
+        }
+    }
+    return true;
+}
+bool RentalShop::checkItem(string id, vector<string>& IDs,string title, string rentalType, string loan, int& numLoanType, string& loanType, string fee, string numOfCopy, string &genre)
+{
+    if (rentalType == "DVD" || rentalType == "Record") {
+        if (checkNullField(genre) == false) {
+            cout << "Missing genre field!" << endl;
+            return false;
+        }
+    }
+    if (checkNullField(title) == false) {
+        cout << "Missing title! \n";
+        return false;
+    }
+    checkLoan(loan, numLoanType, loanType);
+    if (checkIdItem(id, IDs) &&
+        checkRentalType(rentalType) &&
+        (numLoanType != -1) &&
+        checkFee(fee) &&
+        checkInt(numOfCopy)) {
+        
+        return true;
+    }
+    return false;
 }
 
 
@@ -118,7 +155,7 @@ void RentalShop::readOneItemInItemFile(ifstream& filein, Item* item, string& gen
     string loan;
     int numLoanType;
     string loanType;
-    int numOfCopy;
+    string numOfCopy;
     string fee;
     // read id
     getline(filein, id, ',');
@@ -128,11 +165,8 @@ void RentalShop::readOneItemInItemFile(ifstream& filein, Item* item, string& gen
     getline(filein, rentalType, ',');
     // get loanType and numLoanType
     getline(filein, loan, ',');
-    checkLoan(loan, numLoanType, loanType);
     // set number of copy, fee, genre
-    filein >> numOfCopy;
-    filein.seekg(1, ios_base::cur); // exclude 1 byte of the character "-"
-
+    getline(filein, numOfCopy, ',');
     // check rental type of the Item object
     if (rentalType == "Record" || rentalType == "DVD") {
         getline(filein, fee, ',');
@@ -140,11 +174,11 @@ void RentalShop::readOneItemInItemFile(ifstream& filein, Item* item, string& gen
     }
     else {
         filein >> fee;
-        string temp; // read the "\n" of the line
-        getline(filein, temp);
+       string temp; // read the "\n" of the line    
+       getline(filein, temp);
     } 
-    if (true) {
-        item->setAll(id, title, rentalType, numLoanType, loanType, numOfCopy, stof(fee));
+    if (checkItem(id,IDs,title, rentalType, loan,numLoanType, loanType, fee, numOfCopy, genre)) {
+        item->setAll(id, title, rentalType, numLoanType, loanType, atoi(numOfCopy.c_str()), stof(fee));
     }
 }
 /*Check type of item
@@ -172,16 +206,16 @@ void RentalShop::readFileItem(ifstream& filein, vector<Item*>& items) {
     int space_back = 0; // the size to move back
     int temp_space_back = 0;
     vector<string> IDs;
-    for (;;) {
-        if (!filein) break; // read until the end of the file
-        getline(filein, temp);
+    for (string temp; getline(filein, temp);) {
+       // if (!filein) break; // read until the end of the file
+        //getline(filein, temp);
         space_back = filein.tellg();
         if (temp[0] != '#') break; // check the first element is "#" then break
-        temp_space_back = space_back;
+        temp_space_back = space_back; 
     }
     filein.seekg(temp_space_back - space_back, ios_base::cur);  // move back
     for (;;) {
-        if (!filein) break; // read until the end of the file
+        if (filein.tellg() == -1) break; // read until the end of the file
             Item* item = new Item();
             string genre = "";
             readOneItemInItemFile(filein, item, genre, IDs);
