@@ -7,6 +7,7 @@
 #include <vector>
 #include "RentalShop.h"
 #include "MovieRecords.h"
+#include"Validation.h"
 using namespace std;
 
 

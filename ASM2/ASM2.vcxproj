@@ -148,6 +148,7 @@
     <ClCompile Include="MovieRecords.cpp" />
     <ClCompile Include="RegularAccount.cpp" />
     <ClCompile Include="RentalShop.cpp" />
+    <ClCompile Include="Validation.cpp" />
     <ClCompile Include="VipAccount.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -159,6 +160,7 @@
     <ClInclude Include="MovieRecords.h" />
     <ClInclude Include="RegularAccount.h" />
     <ClInclude Include="RentalShop.h" />
+    <ClInclude Include="Validation.h" />
     <ClInclude Include="VipAccount.h" />
   </ItemGroup>
   <ItemGroup>
