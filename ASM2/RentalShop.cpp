@@ -17,6 +17,7 @@ void RentalShop::setItems(vector<Item*> items) {
 }
 
 /*CHECK INPUT FILE FIELD*/
+/*ITEM FILE*/
 bool RentalShop::checkNullField(string field) {
     if (field == "" || field == "\n") {
         return false;
@@ -47,7 +48,7 @@ bool RentalShop::checkIdItem(string id, vector<string>& IDs) {
                 if (year >= 1000 && year <= 2021) {
                     for (int i = 0; i < IDs.size(); i++) {
                         if (id == IDs[i]) {
-                            cout << "ID is not unique" << endl;
+                            cout << "ID Item is not unique" << endl;
                             return false;
                         }
                     }
@@ -122,6 +123,7 @@ bool RentalShop::checkInt(string num) {
     }
     return true;
 }
+/*check all element*/
 bool RentalShop::checkItem(string id, vector<string>& IDs,string title, string rentalType, string loan, int& numLoanType, string& loanType, string fee, string numOfCopy, string &genre)
 {
     if (rentalType == "DVD" || rentalType == "Record") {
@@ -181,6 +183,9 @@ void RentalShop::readOneItemInItemFile(ifstream& filein, Item* item, string& gen
         item->setAll(id, title, rentalType, numLoanType, loanType, atoi(numOfCopy.c_str()), stof(fee));
     }
 }
+
+
+
 /*Check type of item
     return 2 : Record
     return 1: DVDs
@@ -242,14 +247,76 @@ void RentalShop::readFileItem(ifstream& filein, vector<Item*>& items) {
 =========================CUSTOMER======================
 ==========================================================*/
 /*read one line of the item in Customer file*/
-
-void RentalShop::readOneCustomerInCustomerFile(ifstream& filein, Customer* customer) {
+/*VALIDATE INPUT FROMCUSTOMER FILE*/
+bool RentalShop::checkIdCustomer(string id, vector<string>& CUSs) {
+    // if id is not a null field
+    if (checkNullField(id)) {
+        if (id[0] == 'C') {
+            bool checkNum = true;
+            // check the next 3 digits
+            for (int i = 1; i < id.length(); i++) {
+                if (i == 4) continue;
+                if (!isdigit(id[i])) {
+                    checkNum = false;
+                }
+            }
+            if (checkNum) {
+                for (int i = 0; i < CUSs.size(); i++) {
+                    if (id == CUSs[i]) {
+                        cout << "ID Customer is not unique" << endl;
+                        return false;
+                    }
+                }
+                CUSs.push_back(id);
+                return true;
+            }
+        }
+        cout << "Wrong ID customer format!" << endl;
+        return false;
+    }
+    cout << "ID is empty!" << endl;
+    return false;
+}
+bool RentalShop::checkCustomerType(string customerType) {
+    if (customerType == "Guest" || customerType == "Regular" || customerType == "VIP") {
+        return true;
+    }
+    cout << "Customer type is not Valid!" << endl;
+    return false;
+}
+bool RentalShop::checkCustomer(string id, vector<string>& CUSs, string name, string address, string phone, string numOfRentals, string customerType, vector<string> listItem) {
+    
+    if (!checkNullField(name)) {
+        cout << "Name of the Customer is NULL! \n";
+        return false;
+    }
+    if (!checkNullField(address)) {
+        cout << "Address of the Customer is NULL! \n";
+        return false;
+    }
+    if (checkNullField(phone)) {
+        if (!checkInt(phone)) {
+            cout << "Phone of the Customer is wrong format" << endl;
+            return false;
+        }
+    }
+    else {
+        cout << "Phone of the Customer is NULL! \n";
+        return false;
+    }
+    if (checkIdCustomer(id, CUSs) && checkCustomerType(customerType)) {
+        return true;
+    }
+    return false;
+}
+void RentalShop::readOneCustomerInCustomerFile(ifstream& filein, Customer* customer, vector<string>& CUSs) {
     // initialize seven variables to store
     string id;
     string name;
+
     string address;
     string phone;
-    int numOfRentals;
+    string numOfRentals;
     string customerType;
     vector<string> listItem;
     // read id
@@ -259,21 +326,22 @@ void RentalShop::readOneCustomerInCustomerFile(ifstream& filein, Customer* custo
     // read rental  type
     getline(filein, address, ',');
     getline(filein, phone, ',');
-    filein >> numOfRentals;
-    filein.seekg(1, ios_base::cur); // exclude 1 byte of the character ","
+    getline(filein, numOfRentals, ',');
+    bool checkRental = checkInt(numOfRentals);
     filein >> customerType;
-    string items;
+    string items = "";
     // check the number of rental 
-    if (numOfRentals != 0) {
-        for (int i = 0; i < numOfRentals; i++) {
+    bool checkId = true;
+    if (checkRental) {
+        int count = 0;
+        for (int i = 0; i < atoi(numOfRentals.c_str()); i++) {
             filein >> items;
-            listItem.push_back(items);
+            checkId = checkIdItem(items, listItem);
         }
     }
     string temp; // read the "\n" of the line
     getline(filein, temp);
-    customer->setAll(id, name, address, phone, numOfRentals, customerType, listItem);
-   
+    if(checkId && checkRental && checkCustomer(id,CUSs,name,address,phone,numOfRentals,customerType,listItem)) customer->setAll(id, name, address, phone, atoi(numOfRentals.c_str()), customerType, listItem);
 }
 
 /*Read file and classofy the Item then add to vector Item*/
@@ -283,6 +351,7 @@ void RentalShop::readFileCustomer(ifstream& filein, vector<Customer*>& customers
     // move the pointer to the start of the line
     int space_back = 0; // the size to move back
     int temp_space_back = 0;
+    vector<string> CUSs;
     for (;;) {
         if (!filein) break; // read until the end of the file
         getline(filein, temp);
@@ -294,7 +363,7 @@ void RentalShop::readFileCustomer(ifstream& filein, vector<Customer*>& customers
     for (;;) {
         if (!filein) break;
         Customer* customer = new Customer();
-        readOneCustomerInCustomerFile(filein, customer);
+        readOneCustomerInCustomerFile(filein, customer, CUSs);
         if (customer->getcustomerType() == "VIP") {
             VipAccount* vip = new VipAccount(customer);
             customers.push_back(vip);
@@ -308,6 +377,7 @@ void RentalShop::readFileCustomer(ifstream& filein, vector<Customer*>& customers
             customers.push_back(regular);
         }     
         }
+    CUSs.clear();
 }
 /*Constructor*/
 RentalShop::RentalShop(ifstream& fileinItem, ifstream& fileinCustomer) {
@@ -339,16 +409,14 @@ void RentalShop::deletePointerVector() {
 
 /*delete pointer vector*/
 void RentalShop::printAll() {
-    /*
-    * for (int i = 0; i < customers.size(); i++) {
-        cout << customers[i]->toString() << endl;
-    }
-    */
     
-
-    for (int i = 0; i < items.size(); i++) {
+     for (int i = 0; i < customers.size(); i++) {
+        cout << customers[i]->toString() << endl;
+    }    
+/*
+* for (int i = 0; i < items.size(); i++) {
         cout << items[i]->toString() << endl;
     }
-
+*/
 }
 
