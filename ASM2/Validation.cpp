@@ -328,23 +328,33 @@ void Validation::readOneCustomerInCustomerFile(ifstream& filein, Customer* custo
     if (checkRental) {
         int space_back = 0; // the size to move back
         int temp_space_back = 0;
-        for (int i = 0; i < atoi(numOfRentals.c_str()); i++) {
+        for (;;) {
+            if (filein.tellg() == -1) break;
             getline(filein, items);
-            checkId = checkIdItem(items, listItem);
             space_back = filein.tellg(); // the size to move back
             if (validateLine(items)) {
                 filein.seekg(temp_space_back - space_back, ios_base::cur);
                 break;
-            } 
+            }
+            else {
+                checkId = checkIdItem(items, listItem);
+            }
             temp_space_back = space_back;
         }
     }
-    if (checkId && checkRental && checkCustomer(id, CUSs, name, address, phone, numOfRentals, customerType, listItem)) customer->setAll(id, name, address, phone, atoi(numOfRentals.c_str()), customerType, listItem);
+    if (checkId && checkRental && checkCustomer(id, CUSs, name, address, phone, numOfRentals, customerType, listItem)) {
+        if (atoi(numOfRentals.c_str()) == listItem.size()) {
+            customer->setAll(id, name, address, phone, atoi(numOfRentals.c_str()), customerType, listItem);
+        }
+        else {
+            cout << "Number of items is not valid!" << endl;
+        }
+
+    }
 }
 
 /*Read file and classofy the Item then add to vector Item*/
 void Validation::readFileCustomer(ifstream& filein, vector<Customer*>& customers) {
-
     string temp; // initialize to check "#" before
     // move the pointer to the start of the line
     int space_back = 0; // the size to move back

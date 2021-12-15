@@ -1,8 +1,8 @@
 ﻿  Validation.cpp
 C:\C Learning\ASM2\ASM2\Validation.cpp(21,31): warning C4018: '<': signed/unsigned mismatch
 C:\C Learning\ASM2\ASM2\Validation.cpp(32,39): warning C4018: '<': signed/unsigned mismatch
-C:\C Learning\ASM2\ASM2\Validation.cpp(197,34): warning C4244: '=': conversion from 'std::streamoff' to 'int', possible loss of data
-C:\C Learning\ASM2\ASM2\Validation.cpp(243,35): warning C4018: '<': signed/unsigned mismatch
-C:\C Learning\ASM2\ASM2\Validation.cpp(336,38): warning C4244: '=': conversion from 'std::streamoff' to 'int', possible loss of data
-C:\C Learning\ASM2\ASM2\Validation.cpp(358,34): warning C4244: '=': conversion from 'std::streamoff' to 'int', possible loss of data
+C:\C Learning\ASM2\ASM2\Validation.cpp(196,34): warning C4244: '=': conversion from 'std::streamoff' to 'int', possible loss of data
+C:\C Learning\ASM2\ASM2\Validation.cpp(242,35): warning C4018: '<': signed/unsigned mismatch
+C:\C Learning\ASM2\ASM2\Validation.cpp(335,38): warning C4244: '=': conversion from 'std::streamoff' to 'int', possible loss of data
+C:\C Learning\ASM2\ASM2\Validation.cpp(367,34): warning C4244: '=': conversion from 'std::streamoff' to 'int', possible loss of data
   ASM2.vcxproj -> C:\C Learning\ASM2\Debug\ASM2.exe
