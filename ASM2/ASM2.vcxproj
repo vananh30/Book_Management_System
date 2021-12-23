@@ -164,8 +164,8 @@
     <ClInclude Include="VipAccount.h" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="items.txt" />
     <Text Include="nhap.txt" />
+    <Text Include="items.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

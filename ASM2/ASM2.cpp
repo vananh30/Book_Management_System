@@ -23,7 +23,7 @@ int main()
     else {
        RentalShop *rt = new RentalShop(fileinItem, fileinCustomer);
        rt->printAll();
-       rt->deletePointerVector();
+    
         // initialize seven variables to store
        
     }

@@ -28,7 +28,14 @@ RentalShop::RentalShop(ifstream& fileinItem, ifstream& fileinCustomer) {
     this->customers = customers;
 }
 RentalShop::~RentalShop() {
-   
+    for (int i = 0; i < items.size(); i++) {
+        delete items[i];
+    }
+    items.clear();
+    for (int i = 0; i < customers.size(); i++) {
+        delete customers[i];
+    }
+    customers.clear();
 }
 
 
