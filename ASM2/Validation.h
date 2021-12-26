@@ -35,10 +35,13 @@ private:
 	static void readOneItemInItemFile(ifstream& filein, Item* item, string& genre, vector<string>& IDs);
 	static int checkTypeItem(Item* item);
 	static void readOneCustomerInCustomerFile(ifstream& filein, Customer* customer, vector<string>& CUSs);
-	
+	static Item* searchItemID(vector<Item*> items, string ID);
 public:
-	static void readFileCustomer(ifstream& filein, vector<Customer*>& customers);
-	static void readFileItem(ifstream& filein, vector<Item*>& items);
+	 void readFileCustomer(ifstream& filein, vector<Customer*>& customers);
+	 void readFileItem(ifstream& filein, vector<Item*>& items);
+	 // this method will find every item of every customer, if its not exist in the items list, the customer who borrowed it is erase from the customer list
+	 // or if the number of item is borrowed by customer > the number of copy available this customer also  be erase
+	 void checkCustomerAndItems(vector<Item*> &items, vector<Customer*>& customers);
 	Validation(ifstream& filein, ifstream& fileinCustomer);
 	~Validation();
 };

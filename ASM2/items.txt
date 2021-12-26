@@ -4,7 +4,7 @@
 I001-2011,Medal of Honour,Game,2-week,1,3.9
 I002-1880,White Castle,Record,2-week,3,0.99,Comedy
 I003-1992,Alpha Dog,Record,1-week,3,1.99,Action
-I004-1999,Rat Race,DVD,1-week,3,1.99,Horror
-I005-2015,Halo,Game,2-day,2,4.99
+I004-1999,Rat Race,DVD,1-week,1,1.99,Horror
+I005-2015,Halo,Game,2-day,2,4.99 
 I006-2015,Halo,Game,2-day,2,4.99
 I007-2013,Halloween,DVD,2-day,1,0.99,Horror
