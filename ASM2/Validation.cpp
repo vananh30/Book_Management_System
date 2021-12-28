@@ -228,7 +228,7 @@ void Validation::readFileItem(ifstream& filein, vector<Item*>& items) {
         // if (!filein) break; // read until the end of the file
          //getline(filein, temp);
         space_back = filein.tellg();
-        if (temp[0] != '#') break; // check the first element is "#" then break
+        if (temp[0] != '#')  break; // check the first element is "#" then break
         temp_space_back = space_back;
     }
     filein.seekg(temp_space_back - space_back, ios_base::cur);  // move back
@@ -406,7 +406,9 @@ void Validation::readFileCustomer(ifstream& filein, vector<Customer*>& customers
         if (!filein) break; // read until the end of the file
         getline(filein, temp);
         space_back = filein.tellg();
-        if (temp[0] != '#') break; // check the first element is "#" then break
+        if (temp[0] != '#' && validateLine(temp)) {
+            break;
+        }// check the first element is "#" then break
         temp_space_back = space_back;
     }
     filein.seekg(temp_space_back - space_back, ios_base::cur);  // move back
@@ -434,14 +436,17 @@ void Validation::checkCustomerAndItems(vector<Item*> &items, vector<Customer*>& 
     vector<string> itemsBorrow;
     for (int i = 0; i < customers.size(); i++) { 
         if (customers[i]->getnumOfRentals() > 0) {
-            for (int j = 0; j < customers[i]->getnumOfRentals(); j++) {
-                Item* itemBorrow = searchItemID(items, customers[i]->getListOfRentals()[j]);
+            vector<string> listRent; // list only contain item which is exist in item list
+            int numOfRent = customers[i]->getnumOfRentals();
+            Item* itemBorrow = new Item();
+            for (int j = 0; j < numOfRent; j++) {
+                itemBorrow = searchItemID(items, customers[i]->getListOfRentals()[j]);
                 if (itemBorrow == NULL) {
-                    cout << "The items that " << customers[i]->getID() << " customer borrowed is not exist in Item list" << endl;
-                    customers.erase(customers.begin() + i);
-                    break;
+                    cerr << "The items that " << customers[i]->getID() << " customer borrowed is not exist in Item list: " << customers[i]->getListOfRentals()[j] << endl;
                 }
                 else {
+                    // add the item the list rent
+                    listRent.push_back(customers[i]->getListOfRentals()[j]);
                     bool checkExist = true;
                     for (int z = 0; z < itemsBorrow.size(); z++) {
                         if (itemBorrow->getID() == itemsBorrow[z]) {
@@ -453,11 +458,12 @@ void Validation::checkCustomerAndItems(vector<Item*> &items, vector<Customer*>& 
                     if (checkExist) {
                         itemsBorrow.push_back(itemBorrow->getID()); // add to the list
                         itemsBorrow.push_back("1"); // add to the list
-                    }
+                    } 
                 }
-               
             }
-
+            customers[i]->setListOfRentals(listRent);
+            customers[i]->setNumOfRentals(listRent.size());
+            listRent.clear();
         }
        
     }
@@ -467,8 +473,11 @@ void Validation::checkCustomerAndItems(vector<Item*> &items, vector<Customer*>& 
             if (items[b]->getID() == itemsBorrow[a]) {
                 if (items[b]->getNumOfCopy() < atoi(itemsBorrow[a + 1].c_str())) {
                     items[b]->setNumOfCopy(atoi(itemsBorrow[a + 1].c_str()));
-                    break;
                 }
+                else if (items[b]->getNumOfCopy() >= atoi(itemsBorrow[a + 1].c_str())) {
+                    items[b]->setNumOfCopy(items[b]->getNumOfCopy()- atoi(itemsBorrow[a + 1].c_str()));
+                }
+                break; 
             }
          }
     }
