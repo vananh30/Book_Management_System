@@ -13,12 +13,12 @@ bool Validation::checkNullField(string field) {
 }
 /*check ID Item format*/
 bool Validation::checkIdItem(string id, vector<string>& IDs) {
-    // if id is not a null field
-    if (id.size() < 9) {
-        cout << "Item Id is wrong format" << endl;
+    if (id.size() < 9) { // add
+        cout << "ERROR FILE INPUT: Item Id is wrong format" << endl;
         return false;
     }
     // if id is not a null field
+
     if (checkNullField(id)) {
         if (id[0] == 'I' && id[4] == '-') {
             bool checkNum = true;
@@ -36,7 +36,7 @@ bool Validation::checkIdItem(string id, vector<string>& IDs) {
                 if (year >= 1000 && year <= 2021) {
                     for (int i = 0; i < IDs.size(); i++) {
                         if (id == IDs[i]) {
-                            cout << "ID Item is not unique" << endl;
+                            cout << "ERROR FILE INPUT: ID Item is not unique" << endl;
                             return false;
                         }
                     }
@@ -45,16 +45,16 @@ bool Validation::checkIdItem(string id, vector<string>& IDs) {
                 }
             }
         }
-        cout << "Wrong ID item format!" << endl;
+        cout << "ERROR FILE INPUT: Wrong ID item format!" << endl;
         return false;
     }
-    cout << "ID is empty!" << endl;
+    cout << "ERROR FILE INPUT: ID is empty!" << endl;
     return false;
 }
 bool Validation::validateIdItem(string id) {
     // if id is not a null field
     if (id.size() < 9) {
-        cout << "Item Id is wrong format" << endl;
+        cout << "ERROR FILE INPUT: Item Id is wrong format" << endl;
         return false;
     }
 
@@ -85,7 +85,7 @@ bool Validation::checkRentalType(string rentalType) {
     if (rentalType == "Game" || rentalType == "DVD" || rentalType == "Record") {
         return true;
     }
-    cout << "Rental type is not Valid!" << endl;
+    cout << "ERROR FILE INPUT: Rental type is not Valid!" << endl;
     return false;
 }
 /*check loan */
@@ -103,6 +103,20 @@ void Validation::checkLoan(string loan, int& numLoanType, string& loanType) {
                 }
             }
             if (checkNum) numLoanType = stoi(loan.substr(0, pos));
+            if (loanType == "day") {
+                if (numLoanType != 2) {
+                    numLoanType = -1;
+                    cout << "Wrong loan format!" << endl;
+                    return;
+                }
+            }
+            if (loanType == "week") {
+                if (numLoanType != 1) {
+                    numLoanType = -1;
+                    cout << "Wrong loan format!" << endl;
+                    return;
+                }
+            }
         }
         else {
             numLoanType = -1;
@@ -129,12 +143,12 @@ bool Validation::checkFee(string fee) {
 /*check if a number is integer*/
 bool Validation::checkInt(string num) {
     if (num.empty()) {
-        cout << "Int is empty!" << endl;
+        cout << "ERROR FILE INPUT: Int is empty!" << endl;
         return false;
     }
     for (char c : num) {
         if (!(isdigit(c))) {
-            cout << "Int is wrong format!" << endl;
+            cout << "ERROR FILE INPUT: Int is wrong format!" << endl;
             return false;
         }
     }
@@ -145,12 +159,12 @@ bool Validation::checkItem(string id, vector<string>& IDs, string title, string 
 {
     if (rentalType == "DVD" || rentalType == "Record") {
         if (checkNullField(genre) == false) {
-            cout << "Missing genre field!" << endl;
+            cout << "ERROR FILE INPUT: Missing genre field!" << endl;
             return false;
         }
     }
     if (checkNullField(title) == false) {
-        cout << "Missing title! \n";
+        cout << "ERROR FILE INPUT: Missing title! \n";
         return false;
     }
     checkLoan(loan, numLoanType, loanType);
@@ -228,7 +242,7 @@ void Validation::readFileItem(ifstream& filein, vector<Item*>& items) {
         // if (!filein) break; // read until the end of the file
          //getline(filein, temp);
         space_back = filein.tellg();
-        if (temp[0] != '#')  break; // check the first element is "#" then break
+        if (temp[0] != '#') break; // check the first element is "#" then break
         temp_space_back = space_back;
     }
     filein.seekg(temp_space_back - space_back, ios_base::cur);  // move back
@@ -275,7 +289,7 @@ bool Validation::checkIdCustomer(string id, vector<string>& CUSs) {
             if (checkNum) {
                 for (int i = 0; i < CUSs.size(); i++) {
                     if (id == CUSs[i]) {
-                        cout << "ID Customer is not unique" << endl;
+                        cout << "ERROR FILE INPUT: ID Customer is not unique" << endl;
                         return false;
                     }
                 }
@@ -283,22 +297,43 @@ bool Validation::checkIdCustomer(string id, vector<string>& CUSs) {
                 return true;
             }
         }
-        cout << "Wrong ID customer format!" << endl;
+        cout << "ERROR FILE INPUT: Wrong ID customer format!" << endl;
         return false;
     }
-    cout << "ID is empty!" << endl;
+    cout << "ERROR FILE INPUT: ID is empty!" << endl;
+    return false;
+}
+bool Validation::validateIdCus(string id) {
+    // if id is not a null field
+    if (id.size() != 4) { //fix
+        cout << "ERROR FILE INPUT: Item Id is wrong format" << endl;
+        return false;
+    }
+    if (checkNullField(id)) {
+        if (id[0] == 'C') {
+            bool checkNum = true;
+            // check the next 3 digits
+            for (int i = 1; i < id.length(); i++) {
+                if (i == 4) continue;
+                if (!isdigit(id[i])) {
+                    checkNum = false;
+                }
+            }
+            return checkNum;
+        }
+    }
     return false;
 }
 bool Validation::checkCustomerType(string customerType) {
     if (customerType == "Guest" || customerType == "Regular" || customerType == "VIP") {
         return true;
     }
-    cout << "Customer type is not Valid!" << endl;
+    cout << "ERROR FILE INPUT: Customer type is not Valid!" << endl;
     return false;
 }
 bool Validation::validateLine(string line) {
     if (line.empty()) {
-        cout << "Line is empty!" << endl;
+        cout << "ERROR FILE INPUT: Line is empty!" << endl;
         return false;
     }
     int count = 0;
@@ -315,21 +350,21 @@ bool Validation::validateLine(string line) {
 bool Validation::checkCustomer(string id, vector<string>& CUSs, string name, string address, string phone, string numOfRentals, string customerType, vector<string> listItem) {
 
     if (!checkNullField(name)) {
-        cout << "Name of the Customer is NULL! \n";
+        cout << "ERROR FILE INPUT: Name of the Customer is NULL! \n";
         return false;
     }
     if (!checkNullField(address)) {
-        cout << "Address of the Customer is NULL! \n";
+        cout << "ERROR FILE INPUT: Address of the Customer is NULL! \n";
         return false;
     }
     if (checkNullField(phone)) {
         if (!checkInt(phone)) {
-            cout << "Phone of the Customer is wrong format" << endl;
+            cout << "ERROR FILE INPUT: Phone of the Customer is wrong format" << endl;
             return false;
         }
     }
     else {
-        cout << "Phone of the Customer is NULL! \n";
+        cout << "ERROR FILE INPUT: Phone of the Customer is NULL! \n";
         return false;
     }
     if (checkIdCustomer(id, CUSs) && checkCustomerType(customerType)) {
@@ -367,13 +402,13 @@ void Validation::readOneCustomerInCustomerFile(ifstream& filein, Customer* custo
             space_back = filein.tellg();
             getline(filein, items);
             temp_space_back = filein.tellg(); // the size to move back
-            if (validateIdItem(items) ){
+            if (validateIdItem(items)) {
                 checkId = checkIdItem(items, listItem);
             }
             else if (validateLine(items)) {
                 filein.seekg(-temp_space_back + space_back, ios_base::cur);
                 break;
-             }
+            }
         }
     }
     if (checkId && checkRental && checkCustomer(id, CUSs, name, address, phone, numOfRentals, customerType, listItem)) {
@@ -406,9 +441,7 @@ void Validation::readFileCustomer(ifstream& filein, vector<Customer*>& customers
         if (!filein) break; // read until the end of the file
         getline(filein, temp);
         space_back = filein.tellg();
-        if (temp[0] != '#' && validateLine(temp)) {
-            break;
-        }// check the first element is "#" then break
+        if (temp[0] != '#') break; // check the first element is "#" then break
         temp_space_back = space_back;
     }
     filein.seekg(temp_space_back - space_back, ios_base::cur);  // move back
@@ -431,10 +464,10 @@ void Validation::readFileCustomer(ifstream& filein, vector<Customer*>& customers
     }
     CUSs.clear();
 }
-void Validation::checkCustomerAndItems(vector<Item*> &items, vector<Customer*>& customers) {
+void Validation::checkCustomerAndItems(vector<Item*>& items, vector<Customer*>& customers) {
     // the format of itemsBorrow is item, numberofBorrow of item1, item 2, numberofBorrow of item2, ... so on
     vector<string> itemsBorrow;
-    for (int i = 0; i < customers.size(); i++) { 
+    for (int i = 0; i < customers.size(); i++) {
         if (customers[i]->getnumOfRentals() > 0) {
             vector<string> listRent; // list only contain item which is exist in item list
             int numOfRent = customers[i]->getnumOfRentals();
@@ -442,7 +475,7 @@ void Validation::checkCustomerAndItems(vector<Item*> &items, vector<Customer*>& 
             for (int j = 0; j < numOfRent; j++) {
                 itemBorrow = searchItemID(items, customers[i]->getListOfRentals()[j]);
                 if (itemBorrow == NULL) {
-                    cerr << "The items that " << customers[i]->getID() << " customer borrowed is not exist in Item list: " << customers[i]->getListOfRentals()[j] << endl;
+                    cerr << "ERROR FILE INPUT: The items that " << customers[i]->getID() << " customer borrowed is not exist in Item list: " << customers[i]->getListOfRentals()[j] << endl;
                 }
                 else {
                     // add the item the list rent
@@ -458,32 +491,87 @@ void Validation::checkCustomerAndItems(vector<Item*> &items, vector<Customer*>& 
                     if (checkExist) {
                         itemsBorrow.push_back(itemBorrow->getID()); // add to the list
                         itemsBorrow.push_back("1"); // add to the list
-                    } 
+                    }
                 }
             }
             customers[i]->setListOfRentals(listRent);
             customers[i]->setNumOfRentals(listRent.size());
             listRent.clear();
         }
-       
+
     }
+
     // update the new number of copy for items
     for (int b = 0; b < items.size(); b++) {
+        if (items[b]->getNumOfCopy() == 0) items[b]->setStatus(false);
+        if (items[b]->getNumOfCopy() != 0) items[b]->setStatus(true);
         for (int a = 0; a < itemsBorrow.size(); a++) {
             if (items[b]->getID() == itemsBorrow[a]) {
                 if (items[b]->getNumOfCopy() < atoi(itemsBorrow[a + 1].c_str())) {
-                    items[b]->setNumOfCopy(atoi(itemsBorrow[a + 1].c_str()));
+                    items[b]->setNumOfCopy(0);
+                    items[b]->setStatus(false);
                 }
                 else if (items[b]->getNumOfCopy() >= atoi(itemsBorrow[a + 1].c_str())) {
-                    items[b]->setNumOfCopy(items[b]->getNumOfCopy()- atoi(itemsBorrow[a + 1].c_str()));
+                    items[b]->setNumOfCopy(items[b]->getNumOfCopy() - atoi(itemsBorrow[a + 1].c_str()));
+                    if (items[b]->getNumOfCopy() == 0) items[b]->setStatus(false);
                 }
-                break; 
+                break;
             }
-         }
+        }
     }
     itemsBorrow.clear();
 }
+
+void Validation::writeFile(vector<Item*> items, vector<Customer*> customers) {
+    ofstream MyFile("ITEMSs.txt");
+    ofstream Myfile2("CUSTOMERS.txt");
+
+    // Write to the file
+    //ID, Title, Rent type, Loan type, Number of copies, rental fee, [genre] if it is a video record or a DVD
+    for (int i = 0; i < items.size(); i++) {
+        std::string fee = std::to_string(items[i]->getFee());
+        std::string numCopy = std::to_string(items[i]->getNumOfCopy());
+        if (items.size() - 1 == i) {
+            if (items[i]->getRentalType() == "Game") {
+                MyFile << items[i]->getID() << "," << items[i]->getTitle() << "," << items[i]->getRentalType() << "," << items[i]->getNumLoanType() << "-" << items[i]->getLoanType() << "," + numCopy << "," << fee;
+            }
+            else {
+                MyFile << items[i]->getID() + "," + items[i]->getTitle() + "," + items[i]->getRentalType() << "," << items[i]->getNumLoanType() << "-" << items[i]->getLoanType() << "," + numCopy << "," << fee << "," << items[i]->getGenres();
+            }
+        }
+        else {
+            if (items[i]->getRentalType() == "Game") {
+                MyFile << items[i]->getID() << "," << items[i]->getTitle() << "," << items[i]->getRentalType() << "," << items[i]->getNumLoanType() << "-" << items[i]->getLoanType() << "," + numCopy << "," << fee << "\n";
+            }
+            else {
+                MyFile << items[i]->getID() + "," + items[i]->getTitle() + "," + items[i]->getRentalType() << "," << items[i]->getNumLoanType() << "-" << items[i]->getLoanType() << "," + numCopy << "," << fee << "," << items[i]->getGenres() << "\n";
+            }
+        }
+    }
+
+    for (int i = 0; i < customers.size(); i++) {
+        Myfile2 << customers[i]->getID() << "," << customers[i]->getName() << "," << customers[i]->getAdress() << "," << customers[i]->getPhone() << "," << customers[i]->getnumOfRentals() << "," << customers[i]->getcustomerType() << "\n";
+
+        if (customers.size() - 1 == i) {
+            for (int j = 0; j < customers[i]->getnumOfRentals(); j++) {
+                Myfile2 << customers[i]->getListOfRentals()[j];
+            }
+        }
+        else {
+            for (int j = 0; j < customers[i]->getnumOfRentals(); j++) {
+                Myfile2 << customers[i]->getListOfRentals()[j] << "\n";
+            }
+        }
+    }
+
+    // Close the file
+    MyFile.close();
+}
+
 Validation::Validation(ifstream& filein, ifstream& fileinCustomer) {
+
+}
+Validation::Validation() {
 
 }
 Validation::~Validation() {

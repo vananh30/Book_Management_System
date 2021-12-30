@@ -7,9 +7,9 @@ using namespace std;
 class GuestAccount : public Customer
 {
 public:
-	GuestAccount();
-	GuestAccount(Customer* cus);
-	~GuestAccount();
-	string toString();
+    GuestAccount();
+    GuestAccount(Customer* cus);
+    ~GuestAccount();
+    string toString();
 };
 

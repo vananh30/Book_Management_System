@@ -15,13 +15,19 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Item.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ASM2.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="RentalShop.cpp">
+    <ClCompile Include="Interface.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Validation.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Customer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Item.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="DVDs.cpp">
@@ -30,27 +36,30 @@
     <ClCompile Include="Games.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Customer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="MovieRecords.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="VipAccount.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="RegularAccount.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="GuestAccount.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Validation.cpp">
+    <ClCompile Include="RegularAccount.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="VipAccount.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RentalShop.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="RentalShop.h">
+    <ClInclude Include="Interface.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Validation.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Customer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Item.h">
@@ -65,19 +74,16 @@
     <ClInclude Include="MovieRecords.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Customer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="VipAccount.h">
+    <ClInclude Include="GuestAccount.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="RegularAccount.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GuestAccount.h">
+    <ClInclude Include="VipAccount.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Validation.h">
+    <ClInclude Include="RentalShop.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

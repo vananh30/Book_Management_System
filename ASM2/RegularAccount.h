@@ -8,10 +8,10 @@ using namespace std;
 class RegularAccount : public Customer
 {
 public:
-	RegularAccount();
-	RegularAccount(Customer* cus);
-	~RegularAccount();
-	string toString();
+    RegularAccount();
+    RegularAccount(Customer* cus);
+    ~RegularAccount();
+    string toString();
 
 };
 

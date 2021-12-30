@@ -3,8 +3,7 @@
 class Games : public Item
 {
 public:
-	Games();
-	Games(Item* item);
-	~Games();
+    Games();
+    Games(Item* item);
+    ~Games();
 };
-
